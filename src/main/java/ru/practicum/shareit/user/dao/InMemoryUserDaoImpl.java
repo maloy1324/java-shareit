@@ -36,8 +36,7 @@ public class InMemoryUserDaoImpl implements UserDao {
 
     public User updateUser(User user) {
         checkEmailExists(user.getEmail(), user.getId()); // Передаем userId для исключения
-        users.put(user.getId(), user);
-        return user;
+        return users.put(user.getId(), user);
     }
 
     @Override

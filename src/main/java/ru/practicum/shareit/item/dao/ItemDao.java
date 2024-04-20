@@ -13,7 +13,7 @@ public interface ItemDao {
 
     List<Item> searchItems(String text);
 
-    Item updateItem(Long itemId, Long ownerId, Item item);
+    Item updateItem(Item item);
 
     void deleteItem(Long itemId);
 

@@ -44,26 +44,9 @@ public class InMemoryItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public Item updateItem(Long itemId, Long ownerId, Item item) {
-        Item existingItem = items.get(itemId);
-        Item updatedItem = Item.builder()
-                .id(itemId)
-                .ownerId(ownerId)
-                .name(existingItem.getName())
-                .description(existingItem.getDescription())
-                .available(existingItem.getAvailable())
-                .build();
-        if (item.getName() != null) {
-            updatedItem.setName(item.getName());
-        }
-        if (item.getDescription() != null) {
-            updatedItem.setDescription(item.getDescription());
-        }
-        if (item.getAvailable() != null) {
-            updatedItem.setAvailable(item.getAvailable());
-        }
-        items.put(itemId, updatedItem);
-        return updatedItem;
+    public Item updateItem(Item item) {
+        items.put(item.getId(), item);
+        return item;
     }
 
     @Override

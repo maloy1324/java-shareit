@@ -8,6 +8,7 @@ import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.dao.ItemDao;
 import ru.practicum.shareit.item.dto.ItemDTO;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.dao.UserDao;
 
 import java.util.ArrayList;
@@ -42,7 +43,24 @@ public class ItemServiceImpl implements ItemService {
         if (!ownerId.equals(itemDao.getItemById(itemId).getOwnerId())) {
             throw new ForbiddenException("Вы не имеете права редактировать данный предмет");
         }
-        return itemMapper.toDTO(itemDao.updateItem(itemId, ownerId, itemMapper.toModel(itemDto)));
+        Item existingItem = itemDao.getItemById(itemId);
+        Item updatedItem = Item.builder()
+                .id(itemId)
+                .ownerId(ownerId)
+                .name(existingItem.getName())
+                .description(existingItem.getDescription())
+                .available(existingItem.getAvailable())
+                .build();
+        if (itemDto.getName() != null) {
+            updatedItem.setName(itemDto.getName());
+        }
+        if (itemDto.getDescription() != null) {
+            updatedItem.setDescription(itemDto.getDescription());
+        }
+        if (itemDto.getAvailable() != null) {
+            updatedItem.setAvailable(itemDto.getAvailable());
+        }
+        return itemMapper.toDTO(itemDao.updateItem(updatedItem));
     }
 
     @Override
