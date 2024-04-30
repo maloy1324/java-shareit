@@ -1,0 +1,1 @@
+ALTER USER maloy WITH PASSWORD 'shareit';
