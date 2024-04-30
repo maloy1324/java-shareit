@@ -11,8 +11,8 @@
     <groupId>ru.yandex.practicum</groupId>
     <artifactId>shareit</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>shareit</name>
-    <description>shareit</description>
+    <name>ShareIt</name>
+    <description>ShareIt</description>
     <properties>
         <java.version>11</java.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
