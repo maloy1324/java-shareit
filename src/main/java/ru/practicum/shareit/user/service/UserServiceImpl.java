@@ -6,9 +6,11 @@ import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dao.UserDao;
 import ru.practicum.shareit.user.dto.UserDTO;
+import ru.practicum.shareit.user.dto.UserOutDTO;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -18,55 +20,42 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserDTO createUser(UserDTO userDto) {
-        return userMapper.toDTO(userDao.createUser(userMapper.toModel(userDto)));
+    public UserOutDTO createUser(UserDTO userDto) {
+        return userMapper.toOutDTO(userDao.save(userMapper.toModel(userDto)));
     }
 
     @Override
-    public UserDTO getUserById(Long userId) {
-        valid(userId);
-        return userMapper.toDTO(userDao.getUserById(userId));
+    public UserOutDTO getUserById(Long id) {
+        return userMapper.toOutDTO(userDao.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found")));
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
-        return userMapper.toListDTO(userDao.getAllUsers());
+    public List<UserOutDTO> getAllUsers() {
+        return userMapper.toListOutDTO(userDao.findAll());
     }
 
     @Override
-    public UserDTO updateUser(Long userId, UserDTO userDto) {
-        valid(userId);
-        return userMapper.toDTO(userDao.updateUser(userMapper.toModel(userDto)));
-    }
+    public UserOutDTO updateUser(Long id, UserDTO userDto) {
+        User userFromDB = userDao.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
-    @Override
-    public UserDTO patchUser(Long userId, UserDTO userDTO) {
-        valid(userId);
-        User existingUser = userDao.getUserById(userId);
-        User updatedUser = User.builder()
-                .id(existingUser.getId())
-                .name(existingUser.getName())
-                .email(existingUser.getEmail())
-                .build();
-        if (userDTO.getEmail() != null) {
-            updatedUser.setEmail(userDTO.getEmail());
+        userDto.setId(userFromDB.getId());
+        if (Objects.isNull(userDto.getName())) {
+            userDto.setName(userFromDB.getName());
         }
-        if (userDTO.getName() != null) {
-            updatedUser.setName(userDTO.getName());
+        if (Objects.isNull(userDto.getEmail())) {
+            userDto.setEmail(userFromDB.getEmail());
         }
-        userDao.updateUser(updatedUser);
-        return userMapper.toDTO(updatedUser);
+
+        return userMapper.toOutDTO(userDao.save(userMapper.toModel(userDto)));
     }
 
     @Override
     public void deleteUser(Long userId) {
-        valid(userId);
-        userDao.deleteUser(userId);
-    }
-
-    private void valid(Long id) {
-        if (!userDao.isExists(id)) {
-            throw new NotFoundException("Пользователь с id " + id + " не найден");
+        if (!userDao.existsById(userId)) {
+            throw new NotFoundException("User not found");
         }
+        userDao.deleteById(userId);
     }
 }

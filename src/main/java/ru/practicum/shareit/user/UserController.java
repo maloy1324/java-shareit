@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDTO;
+import ru.practicum.shareit.user.dto.UserOutDTO;
 import ru.practicum.shareit.user.service.UserService;
 
 import javax.validation.Valid;
@@ -22,32 +23,26 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO createUser(@RequestBody @Valid UserDTO userDTO) {
+    public UserOutDTO createUser(@RequestBody @Valid UserDTO userDTO) {
         return userService.createUser(userDTO);
     }
 
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO getUser(@PathVariable Long userId) {
+    public UserOutDTO getUser(@PathVariable Long userId) {
         return userService.getUserById(userId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> getAllUsers() {
+    public List<UserOutDTO> getAllUsers() {
         return userService.getAllUsers();
-    }
-
-    @PutMapping("/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    public UserDTO updateUser(@PathVariable Long userId, @RequestBody @Valid UserDTO userDTO) {
-        return userService.updateUser(userId, userDTO);
     }
 
     @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO patchUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
-        return userService.patchUser(userId, userDTO);
+    public UserOutDTO patchUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
+        return userService.updateUser(userId, userDTO);
     }
 
     @DeleteMapping("/{userId}")
