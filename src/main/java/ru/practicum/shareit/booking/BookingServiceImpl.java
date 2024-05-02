@@ -61,9 +61,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingOutDTO getBooking(Long bookerId, Long bookingId) {
+    public BookingOutDTO getBooking(Long userId, Long bookingId) {
         return bookingMapper.toOutDTO(
-                bookingRepository.findBookingByIdAndBooker_IdOrIdAndItem_Owner_Id(bookingId, bookerId, bookingId, bookerId)
+                bookingRepository.findBookingByIdAndBooker_IdOrIdAndItem_Owner_Id(bookingId, userId, bookingId, userId)
                         .orElseThrow(() -> new NotFoundException("Booking not found")));
     }
 
