@@ -17,7 +17,7 @@ public class HandlerException {
     public ResponseEntity<ResponseError> notFound(NotFoundException e) {
         log.error(e.getMessage());
         return new ResponseEntity<>(ResponseError.builder()
-                .message(e.getMessage())
+                .error(e.getMessage())
                 .build(), HttpStatus.NOT_FOUND);
     }
 
@@ -25,7 +25,7 @@ public class HandlerException {
     public ResponseEntity<ResponseError> badRequest(BadRequestException e) {
         log.error(e.getMessage());
         return new ResponseEntity<>(ResponseError.builder()
-                .message(e.getMessage())
+                .error(e.getMessage())
                 .build(), HttpStatus.BAD_REQUEST);
     }
 
@@ -33,7 +33,7 @@ public class HandlerException {
     public ResponseEntity<ResponseError> conflict(ConflictException e) {
         log.error(e.getMessage());
         return new ResponseEntity<>(ResponseError.builder()
-                .message(e.getMessage())
+                .error(e.getMessage())
                 .build(), HttpStatus.CONFLICT);
     }
 
@@ -41,7 +41,7 @@ public class HandlerException {
     public ResponseEntity<ResponseError> conflict(ForbiddenException e) {
         log.error(e.getMessage());
         return new ResponseEntity<>(ResponseError.builder()
-                .message(e.getMessage())
+                .error(e.getMessage())
                 .build(), HttpStatus.FORBIDDEN);
     }
 
@@ -51,7 +51,7 @@ public class HandlerException {
         String errorMessage = buildErrorMessage(bindingResult);
         log.error("Ошибка вадидации: " + errorMessage);
         return new ResponseEntity<>(ResponseError.builder()
-                .message("Ошибка вадидации: " + errorMessage)
+                .error("Ошибка вадидации: " + errorMessage)
                 .build(), HttpStatus.BAD_REQUEST);
     }
 
@@ -59,7 +59,7 @@ public class HandlerException {
     public ResponseEntity<ResponseError> throwableException(Exception e) {
         log.error("Возникла непредвиденная ошибка", e);
         return new ResponseEntity<>(ResponseError.builder()
-                .message(e.getMessage())
+                .error(e.getMessage())
                 .build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

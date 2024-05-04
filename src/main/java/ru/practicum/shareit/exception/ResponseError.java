@@ -6,5 +6,5 @@ import lombok.Data;
 @Builder
 @Data
 public class ResponseError {
-    private String message;
+    private String error;
 }

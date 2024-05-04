@@ -1,21 +1,23 @@
 package ru.practicum.shareit.item.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
 
-public interface ItemDao {
-    Item addItem(Long ownerId, Item item);
+public interface ItemDao extends JpaRepository<Item, Long> {
+    @Query(" select i from Item i " +
+            "where upper(i.name) like upper(concat('%', ?1, '%')) " +
+            " or upper(i.description) like upper(concat('%', ?1, '%'))" +
+            " and i.available = true")
+    List<Item> search(String text);
 
-    Item getItemById(Long itemId);
+    List<Item> findByOwnerId(Long ownerId);
 
-    List<Item> getAllItemsByOwner(Long ownerId);
+    void deleteByOwnerId(Long ownerId);
 
-    List<Item> searchItems(String text);
+    List<Item> findAllByOwnerIdOrderById(Long ownerId);
 
-    Item updateItem(Item item);
-
-    void deleteItem(Long itemId);
-
-    boolean isExists(Long id);
+    boolean existsItemByIdAndOwner_Id(Long itemId, Long ownerId);
 }
