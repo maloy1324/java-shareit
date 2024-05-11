@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.service.ItemRequestService;
-import ru.practicum.shareit.user.model.User;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -39,11 +38,6 @@ public class ItemRequestControllerTest {
 
     @BeforeEach
     void setUp() {
-        User user = User.builder()
-                .id(1L)
-                .name("vvvvv")
-                .email("vvvvvv@vvvvvv.ru")
-                .build();
         String description = "description";
         LocalDateTime dateTime = LocalDateTime.of(2024, 4, 1, 23, 0, 0);
 

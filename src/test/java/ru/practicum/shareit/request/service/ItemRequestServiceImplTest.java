@@ -6,7 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.dao.ItemDao;
@@ -58,8 +60,6 @@ class ItemRequestServiceImplTest {
     private final Long userId = 1L;
     private final Long itemRequestId = 1L;
     private final Long invalidId = 999L;
-    private final int from = 0;
-    private final int size = 2;
     private final LocalDateTime now = LocalDateTime.now();
 
     void setUp() {
@@ -158,7 +158,6 @@ class ItemRequestServiceImplTest {
         Long userId = 1L;
         Integer from = 0;
         Integer size = 10;
-        Pageable pageable = PageRequest.of(from / size, size, Sort.by("created").descending());
         List<ItemRequest> itemRequests = Collections.emptyList();
         Page<ItemRequest> pagedResponse = new PageImpl<>(itemRequests);
 

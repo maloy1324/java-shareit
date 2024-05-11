@@ -9,19 +9,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDTO;
 import ru.practicum.shareit.user.dto.UserOutDTO;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,7 +37,6 @@ public class UserControllerIntegrationTest {
     private UserOutDTO userOutDTO;
     private final ObjectMapper mapper = new ObjectMapper();
     private final Long userId1 = 1L;
-    private final Long userId2 = 3L;
     private final Long invalidId = 999L;
 
     public void setUp() {
@@ -126,62 +120,8 @@ public class UserControllerIntegrationTest {
                         NotFoundException.class));
     }
 
-//    @Test
-//    @Order(5)
-//    @SneakyThrows
-//    public void testCreateUser_WithOldEmail_ResulStatusCreated() {
-//        setUp();
-//        userOutDTO = userOutDTO.toBuilder().id(3L).build();
-//
-//        mvc.perform(post("/users")
-//                        .content(mapper.writeValueAsString(userDTO))
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isCreated())
-//                .andExpect(content().json(mapper.writeValueAsString(userOutDTO)));
-//    }
-
-//    @Test
-//    @Order(6)
-//    @SneakyThrows
-//    public void testUpdateUser_OnlyName_ResulStatusOk() {
-//        setUp();
-//        UserDTO userDTO = UserDTO.builder().name("updateTest").build();
-//        userOutDTO = userOutDTO.toBuilder().id(userId2).name("updateTest").build();
-//
-//        mvc.perform(patch("/users/{userId}", userId2)
-//                        .content(mapper.writeValueAsString(userDTO))
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(content().json(mapper.writeValueAsString(userOutDTO)));
-//    }
-
-//    @Test
-//    @Order(7)
-//    @SneakyThrows
-//    public void testGetAllUser_ResulStatusOk() {
-//        UserOutDTO userOutDTO1 = UserOutDTO.builder()
-//                .id(1L)
-//                .email("updatetest@test.com")
-//                .name("Test")
-//                .build();
-//
-//        UserOutDTO userOutDTO2 = UserOutDTO.builder()
-//                .id(3L)
-//                .email("test@test.com")
-//                .name("updateTest")
-//                .build();
-//
-//        List<UserOutDTO> users = Arrays.asList(userOutDTO1, userOutDTO2);
-//
-//        mvc.perform(get("/users"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().json(mapper.writeValueAsString(users)));
-//    }
-
     @Test
-    @Order(8)
+    @Order(5)
     @SneakyThrows
     public void testDeleteUser_ResulStatusOk() {
 
@@ -189,25 +129,8 @@ public class UserControllerIntegrationTest {
                 .andExpect(status().isNoContent());
     }
 
-//    @Test
-//    @Order(9)
-//    @SneakyThrows
-//    public void testGetAllUser_AfterDeleteUser_ResulStatusOk() {
-//        UserOutDTO userOutDTO2 = UserOutDTO.builder()
-//                .id(3L)
-//                .email("test@test.com")
-//                .name("updateTest")
-//                .build();
-//
-//        List<UserOutDTO> users = Collections.singletonList(userOutDTO2);
-//
-//        mvc.perform(get("/users"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().json(mapper.writeValueAsString(users)));
-//    }
-
     @Test
-    @Order(10)
+    @Order(6)
     @SneakyThrows
     public void testDeleteUser_WithInvalidId_ResulStatusOk() {
         mvc.perform(delete("/users/{userId}", userId1))

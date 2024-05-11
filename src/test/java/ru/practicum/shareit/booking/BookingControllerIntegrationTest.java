@@ -60,7 +60,7 @@ public class BookingControllerIntegrationTest {
     private Item item3;
     private ItemOutDTO itemOutDTO2;
 
-    
+
     private BookingDTO bookingDTO;
     private BookingOutDTO bookingOutDTO;
 

@@ -10,13 +10,12 @@ import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.dao.ItemDao;
 import ru.practicum.shareit.item.dto.ItemDTO;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.request.dao.ItemRequestDao;
 import ru.practicum.shareit.user.dao.UserDao;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ItemServiceImplTest {
@@ -29,9 +28,6 @@ class ItemServiceImplTest {
 
     @Mock
     private UserDao userDao;
-
-    @Mock
-    private ItemRequestDao itemRequestDao;
 
     @InjectMocks
     private ItemServiceImpl itemService;
@@ -56,8 +52,8 @@ class ItemServiceImplTest {
         when(itemMapper.toDTO(item)).thenReturn(itemDto);
         when(userDao.existsById(ownerId)).thenReturn(false);
 
-        assertThrows(NotFoundException.class, () -> {
-            itemService.updateItem(itemId, ownerId, itemDto);
-        });
+        assertThrows(NotFoundException.class, () ->
+                itemService.updateItem(itemId, ownerId, itemDto)
+        );
     }
 }

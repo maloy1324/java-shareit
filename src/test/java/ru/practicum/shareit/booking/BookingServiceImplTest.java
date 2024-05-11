@@ -8,8 +8,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dao.UserDao;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BookingServiceImplTest {
@@ -17,18 +17,11 @@ class BookingServiceImplTest {
     @Mock
     private UserDao userRepository;
 
-    @Mock
-    private BookingDao bookingRepository;
-
-    @Mock
-    private BookingMapper bookingMapper;
-
     @InjectMocks
     private BookingServiceImpl bookingService;
 
     @Test
     void testGetUserBookings_WhenUserNotFound_ShouldThrowNotFoundException() {
-        // Arrange
         Long userId = 1L;
         String state = "ALL";
         Integer from = 0;
@@ -36,9 +29,8 @@ class BookingServiceImplTest {
 
         when(userRepository.existsById(userId)).thenReturn(false);
 
-        // Act and Assert
-        assertThrows(NotFoundException.class, () -> {
-            bookingService.getUserBookings(userId, state, from, size);
-        });
+        assertThrows(NotFoundException.class, () ->
+                bookingService.getUserBookings(userId, state, from, size)
+        );
     }
 }

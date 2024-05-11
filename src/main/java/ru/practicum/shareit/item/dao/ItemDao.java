@@ -13,10 +13,6 @@ public interface ItemDao extends JpaRepository<Item, Long> {
             " and i.available = true")
     List<Item> search(String text);
 
-    List<Item> findByOwnerId(Long ownerId);
-
-    void deleteByOwnerId(Long ownerId);
-
     List<Item> findAllByOwnerIdOrderById(Long ownerId);
 
     boolean existsItemByIdAndOwner_Id(Long itemId, Long ownerId);

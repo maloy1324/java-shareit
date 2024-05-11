@@ -1,7 +1,6 @@
 package ru.practicum.shareit.user.service;
 
 import lombok.SneakyThrows;
-import org.aspectj.weaver.ast.Not;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,26 +8,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.practicum.shareit.exception.BadRequestException;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.user.dto.UserDTO;
 import ru.practicum.shareit.user.UserMapper;
+import ru.practicum.shareit.user.dao.UserDao;
+import ru.practicum.shareit.user.dto.UserDTO;
 import ru.practicum.shareit.user.dto.UserOutDTO;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.dao.UserDao;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
-
-;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {

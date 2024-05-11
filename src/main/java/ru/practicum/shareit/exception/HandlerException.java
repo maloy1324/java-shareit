@@ -1,7 +1,6 @@
 package ru.practicum.shareit.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -28,14 +27,6 @@ public class HandlerException {
         return new ResponseEntity<>(ResponseError.builder()
                 .error(e.getMessage())
                 .build(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<ResponseError> conflict(ConflictException e) {
-        log.error(e.getMessage());
-        return new ResponseEntity<>(ResponseError.builder()
-                .error(e.getMessage())
-                .build(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(ForbiddenException.class)

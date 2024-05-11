@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
-import ru.practicum.shareit.request.mapping.ItemRequestMapping;
 import ru.practicum.shareit.request.service.ItemRequestService;
 
 import javax.validation.Valid;

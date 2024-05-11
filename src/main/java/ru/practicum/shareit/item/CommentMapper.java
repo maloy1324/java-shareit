@@ -1,4 +1,4 @@
-package ru.practicum.shareit.comment;
+package ru.practicum.shareit.item;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,9 +23,5 @@ public interface CommentMapper {
     @Mapping(source = "authorId", target = "author.id")
     Comment toModel(CommentDTO commentDTO);
 
-    List<CommentDTO> toListDTO(List<Comment> modelList);
-
     List<CommentOutDTO> toListOutDTO(List<Comment> modelList);
-
-    List<Comment> toModelList(List<CommentDTO> commentDTOList);
 }

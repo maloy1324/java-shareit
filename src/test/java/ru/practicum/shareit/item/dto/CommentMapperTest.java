@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.practicum.shareit.comment.CommentMapperImpl;
+import ru.practicum.shareit.item.CommentMapperImpl;
 import ru.practicum.shareit.item.model.Comment;
 
 import java.util.ArrayList;

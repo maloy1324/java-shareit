@@ -1,4 +1,4 @@
-DROP ALL OBJECTS;
+DROP table IF EXISTS users, request, items, comments, bookings;
 
 CREATE TABLE IF NOT EXISTS users
 (
