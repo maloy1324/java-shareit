@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Builder
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "users")
 public class User {

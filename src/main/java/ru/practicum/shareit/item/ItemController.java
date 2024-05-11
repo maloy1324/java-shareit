@@ -56,10 +56,4 @@ public class ItemController {
                                     @RequestBody @Valid CommentDTO commentDTO) {
         return itemService.addComment(userId, itemId, commentDTO);
     }
-
-    @DeleteMapping("/{itemId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteItem(@PathVariable Long itemId) {
-        itemService.deleteItem(itemId);
-    }
 }

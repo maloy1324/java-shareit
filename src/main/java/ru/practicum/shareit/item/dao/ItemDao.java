@@ -20,4 +20,8 @@ public interface ItemDao extends JpaRepository<Item, Long> {
     List<Item> findAllByOwnerIdOrderById(Long ownerId);
 
     boolean existsItemByIdAndOwner_Id(Long itemId, Long ownerId);
+
+    List<Item> findAllByRequestIdIn(List<Long> requestIds);
+
+    List<Item> findAllByRequestId(Long requestId);
 }

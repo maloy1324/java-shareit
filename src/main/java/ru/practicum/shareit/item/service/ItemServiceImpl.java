@@ -17,6 +17,7 @@ import ru.practicum.shareit.item.dto.CommentDTO;
 import ru.practicum.shareit.item.dto.CommentOutDTO;
 import ru.practicum.shareit.item.dto.ItemDTO;
 import ru.practicum.shareit.item.dto.ItemOutDTO;
+import ru.practicum.shareit.request.dao.ItemRequestDao;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dao.UserDao;
 import ru.practicum.shareit.user.dto.UserDTO;
@@ -39,18 +40,24 @@ public class ItemServiceImpl implements ItemService {
     private final UserMapper userMapper;
     private final CommentMapper commentMapper;
     private final CommentDao commentDao;
+    private final ItemRequestDao itemRequestDao;
 
     @Override
     public ItemOutDTO addItem(Long ownerId, ItemDTO itemDto) {
         checkUserExists(ownerId);
         itemDto.setOwnerId(ownerId);
-        return itemMapper.toOutDTO(itemDao.save(itemMapper.toModel(itemDto)));
+        ItemOutDTO itemOutDTO = itemMapper.toOutDTO(itemDao.save(itemMapper.toModel(itemDto)));
+        itemOutDTO.setComments(new ArrayList<>());
+        return itemOutDTO;
     }
 
     @Override
     public ItemOutDTO getItemById(Long itemId, Long userId) {
         ItemOutDTO itemOutDTO = itemMapper.toOutDTO(itemDao.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Item not found")));
+        if (!userDao.existsById(userId)) {
+            throw new NotFoundException("User not found");
+        }
         List<BookingDTO> bookings = bookingMapper.toListDTO(bookingDao.findAllByItem_IdAndStatusIsNot(itemId, REJECTED));
         List<CommentOutDTO> comments = commentMapper.toListOutDTO(commentDao.findAllByItem_IdOrderByCreatedDesc(itemId));
         if (!itemDao.existsItemByIdAndOwner_Id(itemId, userId)) {
@@ -67,8 +74,17 @@ public class ItemServiceImpl implements ItemService {
         ItemDTO itemFromDB = itemMapper.toDTO(itemDao.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Item not found")));
 
+        if (!userDao.existsById(ownerId)) {
+            throw new NotFoundException("User not found");
+        }
+
         if (!itemFromDB.getOwnerId().equals(ownerId)) {
             throw new ForbiddenException("Вы не имеете права редактировать данный предмет");
+        }
+        if (itemDto.getRequestId() != null) {
+            if (!itemRequestDao.existsById(itemDto.getRequestId())) {
+                throw new NotFoundException("Request not found");
+            }
         }
 
         itemDto.setId(itemId);
@@ -136,14 +152,6 @@ public class ItemServiceImpl implements ItemService {
         commentOutDTO.setAuthorName(userFromDB.getName());
 
         return commentOutDTO;
-    }
-
-    @Override
-    public void deleteItem(Long itemId) {
-        if (!itemDao.existsById(itemId)) {
-            throw new NotFoundException("Вещь с таким ID не найдена.");
-        }
-        itemDao.deleteById(itemId);
     }
 
     private void checkUserExists(Long id) {

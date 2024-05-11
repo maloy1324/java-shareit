@@ -9,7 +9,7 @@ import ru.practicum.shareit.user.dto.UserOutDTO;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 public class BookingOutDTO {
     private Long id;
 

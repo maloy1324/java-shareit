@@ -1,6 +1,7 @@
 package ru.practicum.shareit.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -53,14 +54,6 @@ public class HandlerException {
         return new ResponseEntity<>(ResponseError.builder()
                 .error("Ошибка вадидации: " + errorMessage)
                 .build(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ResponseError> throwableException(Exception e) {
-        log.error("Возникла непредвиденная ошибка", e);
-        return new ResponseEntity<>(ResponseError.builder()
-                .error(e.getMessage())
-                .build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String buildErrorMessage(BindingResult bindingResult) {
