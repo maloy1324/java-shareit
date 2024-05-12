@@ -10,6 +10,8 @@ import ru.practicum.shareit.item.dto.ItemOutDTO;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -41,13 +43,17 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemOutDTO> getAllItemsByOwner(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
-        return itemService.getAllItemsByOwner(ownerId);
+    public List<ItemOutDTO> getAllItemsByOwner(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+                                               @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                               @RequestParam(defaultValue = "10") @Positive Integer size) {
+        return itemService.getAllItemsByOwner(ownerId, from, size);
     }
 
     @GetMapping("/search")
-    public List<ItemOutDTO> searchItems(@RequestParam String text) {
-        return itemService.searchItems(text);
+    public List<ItemOutDTO> searchItems(@RequestParam String text,
+                                        @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                        @RequestParam(defaultValue = "10") @Positive Integer size) {
+        return itemService.searchItems(text, from, size);
     }
 
     @PostMapping("/{itemId}/comment")
@@ -55,11 +61,5 @@ public class ItemController {
                                     @PathVariable Long itemId,
                                     @RequestBody @Valid CommentDTO commentDTO) {
         return itemService.addComment(userId, itemId, commentDTO);
-    }
-
-    @DeleteMapping("/{itemId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteItem(@PathVariable Long itemId) {
-        itemService.deleteItem(itemId);
     }
 }

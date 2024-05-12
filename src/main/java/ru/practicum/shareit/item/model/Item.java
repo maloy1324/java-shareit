@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Builder
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "items")
 public class Item {
@@ -26,4 +26,6 @@ public class Item {
     private String description;
     @Column(nullable = false)
     private Boolean available;
+    @Column
+    private Long requestId;
 }

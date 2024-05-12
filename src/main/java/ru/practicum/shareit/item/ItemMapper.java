@@ -18,9 +18,5 @@ public interface ItemMapper {
     @Mapping(source = "ownerId", target = "owner.id")
     Item toModel(ItemDTO itemDTO);
 
-    List<ItemDTO> toListDTO(List<Item> modelList);
-
     List<ItemOutDTO> toListOutDTO(List<Item> modelList);
-
-    List<Item> toModelList(List<ItemDTO> itemDTOList);
 }

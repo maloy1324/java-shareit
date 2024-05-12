@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 public class ItemDTO {
     private Long id;
     private Long ownerId;
@@ -17,4 +17,5 @@ public class ItemDTO {
     private String description;
     @NotNull(message = "Поле available не может быть null")
     private Boolean available;
+    private Long requestId;
 }

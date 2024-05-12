@@ -2,13 +2,17 @@ package ru.practicum.shareit.booking;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDTO;
 import ru.practicum.shareit.booking.dto.BookingOutDTO;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
@@ -31,14 +35,18 @@ public class BookingController {
 
     @GetMapping
     public List<BookingOutDTO> getUserBookings(@RequestHeader("X-Sharer-User-Id") Long bookerId,
-                                               @RequestParam(required = false, defaultValue = "ALL") String state) {
-        return bookingService.getUserBookings(bookerId, state);
+                                               @RequestParam(required = false, defaultValue = "ALL") String state,
+                                               @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                               @RequestParam(defaultValue = "10") @Positive Integer size) {
+        return bookingService.getUserBookings(bookerId, state, from, size);
     }
 
     @GetMapping("/owner")
     public List<BookingOutDTO> getOwnerBookings(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                                                @RequestParam(required = false, defaultValue = "ALL") String state) {
-        return bookingService.getOwnerBookings(ownerId, state);
+                                                @RequestParam(required = false, defaultValue = "ALL") String state,
+                                                @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                                @RequestParam(defaultValue = "10") @Positive Integer size) {
+        return bookingService.getOwnerBookings(ownerId, state, from, size);
     }
 
     @PatchMapping("/{bookingId}")

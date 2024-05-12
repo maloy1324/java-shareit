@@ -29,14 +29,6 @@ public class HandlerException {
                 .build(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<ResponseError> conflict(ConflictException e) {
-        log.error(e.getMessage());
-        return new ResponseEntity<>(ResponseError.builder()
-                .error(e.getMessage())
-                .build(), HttpStatus.CONFLICT);
-    }
-
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ResponseError> conflict(ForbiddenException e) {
         log.error(e.getMessage());
@@ -53,14 +45,6 @@ public class HandlerException {
         return new ResponseEntity<>(ResponseError.builder()
                 .error("Ошибка вадидации: " + errorMessage)
                 .build(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ResponseError> throwableException(Exception e) {
-        log.error("Возникла непредвиденная ошибка", e);
-        return new ResponseEntity<>(ResponseError.builder()
-                .error(e.getMessage())
-                .build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String buildErrorMessage(BindingResult bindingResult) {
