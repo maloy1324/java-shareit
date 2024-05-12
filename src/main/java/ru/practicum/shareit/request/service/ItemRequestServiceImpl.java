@@ -27,12 +27,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ItemRequestServiceImpl implements ItemRequestService {
-    public final UserDao userDao;
-    public final UserMapper userMapper;
-    public final ItemRequestDao itemRequestDao;
-    public final ItemRequestMapping itemRequestMapping;
-    public final ItemDao itemDao;
-    public final ItemMapper itemMapper;
+    private final UserDao userDao;
+    private final ItemRequestDao itemRequestDao;
+    private final ItemRequestMapping itemRequestMapping;
+    private final ItemDao itemDao;
+    private final ItemMapper itemMapper;
 
     @Override
     @Transactional

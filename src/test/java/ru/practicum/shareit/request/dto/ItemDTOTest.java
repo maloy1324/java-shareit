@@ -1,8 +1,5 @@
 package ru.practicum.shareit.request.dto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
@@ -29,13 +26,7 @@ public class ItemDTOTest {
 
     @Test
     public void testJsonSerialization() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
-        String expectedJson = objectMapper.writeValueAsString(itemRequestDto);
-
-        assertThat(json.write(itemRequestDto)).isEqualToJson(expectedJson);
+        assertThat(json.write(itemRequestDto)).isEqualToJson("itemRequestDto.json");
     }
 
     @Test

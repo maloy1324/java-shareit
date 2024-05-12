@@ -1,6 +1,9 @@
 package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingDao;
 import ru.practicum.shareit.booking.BookingMapper;
@@ -17,6 +20,7 @@ import ru.practicum.shareit.item.dto.CommentDTO;
 import ru.practicum.shareit.item.dto.CommentOutDTO;
 import ru.practicum.shareit.item.dto.ItemDTO;
 import ru.practicum.shareit.item.dto.ItemOutDTO;
+import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.request.dao.ItemRequestDao;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dao.UserDao;
@@ -58,7 +62,7 @@ public class ItemServiceImpl implements ItemService {
         if (!userDao.existsById(userId)) {
             throw new NotFoundException("User not found");
         }
-        List<BookingDTO> bookings = bookingMapper.toListDTO(bookingDao.findAllByItem_IdAndStatusIsNot(itemId, REJECTED));
+        List<BookingDTO> bookings = bookingMapper.toListDTO(bookingDao.findAllByItem_IdAndStatusIsNot(itemId, REJECTED, Pageable.unpaged()).getContent());
         List<CommentOutDTO> comments = commentMapper.toListOutDTO(commentDao.findAllByItem_IdOrderByCreatedDesc(itemId));
         if (!itemDao.existsItemByIdAndOwner_Id(itemId, userId)) {
             itemOutDTO.setComments(comments);
@@ -102,27 +106,36 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemOutDTO> getAllItemsByOwner(Long ownerId) {
+    public List<ItemOutDTO> getAllItemsByOwner(Long ownerId, Integer from, Integer size) {
         List<ItemOutDTO> responseItems = itemMapper.toListOutDTO(itemDao.findAllByOwnerIdOrderById(ownerId));
         List<Long> itemsIds = responseItems.stream()
                 .map(ItemOutDTO::getId)
                 .collect(Collectors.toList());
-        Map<Long, List<BookingDTO>> bookings = bookingDao.findAllByItem_IdInAndStatusIsNot(itemsIds, REJECTED).stream()
+
+        Pageable pageable = PageRequest.of(from / size, size);
+
+        Map<Long, List<BookingDTO>> bookings = bookingDao.findAllByItem_IdInAndStatusIsNot(itemsIds, REJECTED, pageable)
+                .getContent()
+                .stream()
                 .map(bookingMapper::toDTO)
                 .collect(Collectors.groupingBy(BookingDTO::getItemId));
-        Map<Long, List<CommentOutDTO>> comments = commentDao.findAllByItem_IdInOrderByCreatedDesc(itemsIds).stream()
+
+        Page<Comment> commentsPage = commentDao.findAllByItem_IdInOrderByCreatedDesc(itemsIds, pageable);
+        Map<Long, List<CommentOutDTO>> comments = commentsPage.getContent()
+                .stream()
                 .map(commentMapper::toOutDTO)
                 .collect(Collectors.groupingBy(CommentOutDTO::getItemId));
+
         LocalDateTime now = LocalDateTime.now();
 
         return responseItems.stream().map(itemDto -> {
             Long itemId = itemDto.getId();
-            return collectItem(itemDto, bookings.get(itemId), comments.get(itemId), now);
+            return collectItem(itemDto, bookings.getOrDefault(itemId, Collections.emptyList()), comments.getOrDefault(itemId, Collections.emptyList()), now);
         }).collect(Collectors.toList());
     }
 
     @Override
-    public List<ItemOutDTO> searchItems(String text) {
+    public List<ItemOutDTO> searchItems(String text, Integer from, Integer size) {
         if (text == null || text.isEmpty()) {
             return new ArrayList<>();
         }

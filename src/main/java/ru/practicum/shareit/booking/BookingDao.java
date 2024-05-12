@@ -14,31 +14,40 @@ public interface BookingDao extends JpaRepository<Booking, Long> {
     Optional<Booking> findBookingByIdAndBooker_IdOrIdAndItem_Owner_Id(
             Long id, Long bookerId, Long bookingId, Long ownerId);
 
-    Page<Booking> findAllByBooker_IdOrderByStartDesc(Long bookerId, Pageable pageable);
+    Page<Booking> findAllByBooker_Id(Long bookerId, Pageable pageable);
 
-    List<Booking> findAllByItem_IdAndStatusIsNot(Long itemId, Status status);
-
-    List<Booking> findAllByItem_IdInAndStatusIsNot(List<Long> itemsIds, Status status);
-
-    Page<Booking> findAllByBooker_IdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(
+    Page<Booking> findAllByBooker_IdAndStartIsBeforeAndEndIsAfter(
             Long bookerId, LocalDateTime now, LocalDateTime timeNow, Pageable pageable);
 
-    Page<Booking> findAllByBooker_IdAndEndIsBeforeOrderByStartDesc(Long bookerId, LocalDateTime now, Pageable pageable);
+    Page<Booking> findAllByBooker_IdAndEndIsBefore(
+            Long bookerId, LocalDateTime now, Pageable pageable);
 
-    Page<Booking> findAllByBooker_IdAndStartIsAfterOrderByStartDesc(Long bookerId, LocalDateTime now, Pageable pageable);
+    Page<Booking> findAllByBooker_IdAndStartIsAfter(
+            Long bookerId, LocalDateTime now, Pageable pageable);
 
-    Page<Booking> findAllByBooker_IdAndStatusOrderByStartDesc(Long bookerId, Status status, Pageable pageable);
+    Page<Booking> findAllByBooker_IdAndStatus(
+            Long bookerId, Status status, Pageable pageable);
 
-    Page<Booking> findAllByItem_Owner_IdOrderByStartDesc(Long ownerId, Pageable pageable);
+    Page<Booking> findAllByItem_Owner_Id(Long ownerId, Pageable pageable);
 
     Page<Booking> findAllByItem_Owner_IdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(
             Long ownerId, LocalDateTime now, LocalDateTime timeNow, Pageable pageable);
 
-    Page<Booking> findAllByItem_Owner_IdAndEndIsBeforeOrderByStartDesc(Long ownerId, LocalDateTime now, Pageable pageable);
+    Page<Booking> findAllByItem_Owner_IdAndEndIsBeforeOrderByStartDesc(
+            Long ownerId, LocalDateTime now, Pageable pageable);
 
-    Page<Booking> findAllByItem_Owner_IdAndStartIsAfterOrderByStartDesc(Long ownerId, LocalDateTime now, Pageable pageable);
+    Page<Booking> findAllByItem_Owner_IdAndStartIsAfterOrderByStartDesc(
+            Long ownerId, LocalDateTime now, Pageable pageable);
 
-    Page<Booking> findAllByItem_Owner_IdAndStatusOrderByStartDesc(Long ownerId, Status status, Pageable pageable);
+    Page<Booking> findAllByItem_Owner_IdAndStatusOrderByStartDesc(
+            Long ownerId, Status status, Pageable pageable);
+
+    Page<Booking> findAllByItem_IdAndStatusIsNot(Long itemId, Status status, Pageable pageable);
+
+    Page<Booking> findAllByItem_IdInAndStatusIsNot(List<Long> itemsIds, Status status, Pageable pageable);
+
+    Page<Booking> findAllByItem_IdAndStatus(Long itemId, Status status, Pageable pageable);
+
 
     boolean existsByItem_IdAndBooker_IdAndStatusAndEndIsBefore(
             Long itemId, Long bookerId, Status status, LocalDateTime now);

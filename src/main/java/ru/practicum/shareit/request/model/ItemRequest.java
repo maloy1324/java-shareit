@@ -2,6 +2,7 @@ package ru.practicum.shareit.request.model;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.Length;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class ItemRequest {
     @JoinColumn(name = "requester_id")
     private User requester;
     @Column(nullable = false)
+    @Length(max = 200)
     private String description;
     @CreationTimestamp
     @Column(nullable = false)
