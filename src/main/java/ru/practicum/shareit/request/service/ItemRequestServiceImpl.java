@@ -14,7 +14,6 @@ import ru.practicum.shareit.request.dao.ItemRequestDao;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.mapping.ItemRequestMapping;
 import ru.practicum.shareit.request.model.ItemRequest;
-import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dao.UserDao;
 import ru.practicum.shareit.user.model.User;
 
@@ -38,7 +37,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     public ItemRequestDto create(Long userId, ItemRequestDto itemRequestDto) {
         ItemRequest itemRequest = itemRequestMapping.fromDto(itemRequestDto);
         User requester = userDao.findById(userId)
-                        .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
         itemRequest.setRequester(requester);
         itemRequest.setCreated(LocalDateTime.now());
         return itemRequestMapping.toDto(itemRequestDao.save(itemRequest));
