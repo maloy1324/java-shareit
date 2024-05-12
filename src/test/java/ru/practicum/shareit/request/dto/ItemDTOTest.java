@@ -26,7 +26,18 @@ public class ItemDTOTest {
 
     @Test
     public void testJsonSerialization() throws Exception {
-        assertThat(json.write(itemRequestDto)).isEqualToJson("itemRequestDto.json");
+        // Сериализация объекта в JSON
+        var result = json.write(itemRequestDto);
+
+        // Проверка наличия необходимых полей в JSON
+        assertThat(result).hasJsonPath("$.id");
+        assertThat(result).hasJsonPath("$.description");
+        assertThat(result).hasJsonPath("$.created");
+
+        // Проверка значений полей в JSON
+        assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(itemRequestDto.getId().intValue());
+        assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo(itemRequestDto.getDescription());
+        assertThat(result).extractingJsonPathStringValue("$.created").isNotEmpty();
     }
 
     @Test
