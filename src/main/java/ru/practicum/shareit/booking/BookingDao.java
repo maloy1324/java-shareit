@@ -30,24 +30,23 @@ public interface BookingDao extends JpaRepository<Booking, Long> {
 
     Page<Booking> findAllByItem_Owner_Id(Long ownerId, Pageable pageable);
 
-    Page<Booking> findAllByItem_Owner_IdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(
+    Page<Booking> findAllByItem_Owner_IdAndStartIsBeforeAndEndIsAfter(
             Long ownerId, LocalDateTime now, LocalDateTime timeNow, Pageable pageable);
 
-    Page<Booking> findAllByItem_Owner_IdAndEndIsBeforeOrderByStartDesc(
+    Page<Booking> findAllByItem_Owner_IdAndEndIsBefore(
             Long ownerId, LocalDateTime now, Pageable pageable);
 
-    Page<Booking> findAllByItem_Owner_IdAndStartIsAfterOrderByStartDesc(
+    Page<Booking> findAllByItem_Owner_IdAndStartIsAfter(
             Long ownerId, LocalDateTime now, Pageable pageable);
 
-    Page<Booking> findAllByItem_Owner_IdAndStatusOrderByStartDesc(
+    Page<Booking> findAllByItem_Owner_IdAndStatus(
             Long ownerId, Status status, Pageable pageable);
 
-    Page<Booking> findAllByItem_IdAndStatusIsNot(Long itemId, Status status, Pageable pageable);
+    Page<Booking> findAllByItem_IdAndStatusIsNot(
+            Long itemId, Status status, Pageable pageable);
 
-    Page<Booking> findAllByItem_IdInAndStatusIsNot(List<Long> itemsIds, Status status, Pageable pageable);
-
-    Page<Booking> findAllByItem_IdAndStatus(Long itemId, Status status, Pageable pageable);
-
+    Page<Booking> findAllByItem_IdInAndStatusIsNot(
+            List<Long> itemsIds, Status status, Pageable pageable);
 
     boolean existsByItem_IdAndBooker_IdAndStatusAndEndIsBefore(
             Long itemId, Long bookerId, Status status, LocalDateTime now);

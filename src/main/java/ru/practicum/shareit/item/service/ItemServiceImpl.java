@@ -21,6 +21,7 @@ import ru.practicum.shareit.item.dto.CommentOutDTO;
 import ru.practicum.shareit.item.dto.ItemDTO;
 import ru.practicum.shareit.item.dto.ItemOutDTO;
 import ru.practicum.shareit.item.model.Comment;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.dao.ItemRequestDao;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dao.UserDao;
@@ -139,7 +140,11 @@ public class ItemServiceImpl implements ItemService {
         if (text == null || text.isEmpty()) {
             return new ArrayList<>();
         }
-        return itemMapper.toListOutDTO(itemDao.search(text));
+
+        Pageable pageable = PageRequest.of(from, size);
+        Page<Item> pageResult = itemDao.search(text, pageable);
+
+        return itemMapper.toListOutDTO(pageResult.getContent());
     }
 
     @Override
