@@ -30,7 +30,7 @@ public class BookingController {
 
     @GetMapping
     public List<BookingOutDTO> getUserBookings(@RequestHeader("X-Sharer-User-Id") Long bookerId,
-                                               @RequestParam String state,
+                                               @RequestParam State state,
                                                @RequestParam Integer from,
                                                @RequestParam Integer size) {
         return bookingService.getUserBookings(bookerId, state, from, size);
@@ -38,7 +38,7 @@ public class BookingController {
 
     @GetMapping("/owner")
     public List<BookingOutDTO> getOwnerBookings(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                                                @RequestParam String state,
+                                                @RequestParam State state,
                                                 @RequestParam Integer from,
                                                 @RequestParam Integer size) {
         return bookingService.getOwnerBookings(ownerId, state, from, size);

@@ -72,13 +72,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingOutDTO> getUserBookings(Long userId, String state, Integer from, Integer size) {
-        State bookingState;
-        try {
-            bookingState = State.valueOf(state);
-        } catch (IllegalArgumentException e) {
-            throw new BadRequestException(String.format("Unknown state: %s", state));
-        }
+    public List<BookingOutDTO> getUserBookings(Long userId, State state, Integer from, Integer size) {
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("User not found");
         }
@@ -87,7 +81,7 @@ public class BookingServiceImpl implements BookingService {
         Pageable pageable = PageRequest.of(from / size, size, newestFirst);
 
         Page<Booking> bookings;
-        switch (bookingState) {
+        switch (state) {
             case ALL:
                 bookings = bookingRepository.findAllByBooker_Id(userId, pageable);
                 break;
@@ -113,13 +107,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingOutDTO> getOwnerBookings(Long ownerId, String state, Integer from, Integer size) {
-        State bookingState;
-        try {
-            bookingState = State.valueOf(state);
-        } catch (IllegalArgumentException e) {
-            throw new BadRequestException(String.format("Unknown state: %s", state));
-        }
+    public List<BookingOutDTO> getOwnerBookings(Long ownerId, State state, Integer from, Integer size) {
         if (!userRepository.existsById(ownerId)) {
             throw new NotFoundException("User not found");
         }
@@ -127,7 +115,7 @@ public class BookingServiceImpl implements BookingService {
         Pageable pageable = PageRequest.of(from / size, size, Sort.Direction.DESC, "start");
 
         Page<Booking> bookings;
-        switch (bookingState) {
+        switch (state) {
             case ALL:
                 bookings = bookingRepository.findAllByItem_Owner_Id(ownerId, pageable);
                 break;

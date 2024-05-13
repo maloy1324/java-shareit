@@ -402,24 +402,6 @@ public class BookingControllerIntegrationTest {
     @Test
     @Order(14)
     @SneakyThrows
-    public void testGetAllBookings_WithUserBookerAndStateUnknown_ResulStatusBadRequest() {
-        setUpBooking();
-
-        mvc.perform(get("/bookings")
-                        .header("X-Sharer-User-Id", userId1)
-                        .param("state", "Unknown")
-                        .param("from", String.valueOf(from))
-                        .param("size", String.valueOf(size))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(result -> assertEquals(Objects.requireNonNull(result.getResolvedException()).getClass(),
-                        BadRequestException.class));
-
-    }
-
-    @Test
-    @Order(15)
-    @SneakyThrows
     public void testGetBookingById_WithInvalidBookingId_ResulStatusNotFound() {
         setUpBooking();
 
@@ -436,7 +418,7 @@ public class BookingControllerIntegrationTest {
 
 
     @Test
-    @Order(16)
+    @Order(15)
     @SneakyThrows
     public void testGetAllBookings_WithUserItemOwner_ResulStatusOk() {
         setUpBooking();
@@ -456,7 +438,7 @@ public class BookingControllerIntegrationTest {
     }
 
     @Test
-    @Order(17)
+    @Order(16)
     @SneakyThrows
     public void testGetAllBookings_WithUserItemOwnerAndStateCurrent_ResulStatusOk() {
         setUpBooking();
@@ -473,7 +455,7 @@ public class BookingControllerIntegrationTest {
     }
 
     @Test
-    @Order(18)
+    @Order(17)
     @SneakyThrows
     public void testGetAllBookings_WithUserItemOwnerAndStatePast_ResulStatusOk() {
         setUpBooking();
@@ -490,7 +472,7 @@ public class BookingControllerIntegrationTest {
     }
 
     @Test
-    @Order(19)
+    @Order(18)
     @SneakyThrows
     public void testGetAllBookings_WithUserItemOwnerAndStateFuture_ResulStatusOk() {
         setUpBooking();
@@ -510,7 +492,7 @@ public class BookingControllerIntegrationTest {
     }
 
     @Test
-    @Order(20)
+    @Order(19)
     @SneakyThrows
     public void testGetAllBookings_WithUserItemOwnerAndStateWaiting_ResulStatusOk() {
         setUpBooking();
@@ -527,7 +509,7 @@ public class BookingControllerIntegrationTest {
     }
 
     @Test
-    @Order(21)
+    @Order(20)
     @SneakyThrows
     public void testGetAllBookings_WithUserItemOwnerAndStateRejected_ResulStatusOk() {
         setUpBooking();
@@ -544,25 +526,7 @@ public class BookingControllerIntegrationTest {
     }
 
     @Test
-    @Order(22)
-    @SneakyThrows
-    public void testGetAllBookings_WithUserItemOwnerAndStateUnknown_ResulStatusBadRequest() {
-        setUpBooking();
-
-        mvc.perform(get("/bookings/owner")
-                        .header("X-Sharer-User-Id", userId2)
-                        .param("state", "Unknown")
-                        .param("from", String.valueOf(from))
-                        .param("size", String.valueOf(size))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(result -> assertEquals(Objects.requireNonNull(result.getResolvedException()).getClass(),
-                        BadRequestException.class));
-
-    }
-
-    @Test
-    @Order(23)
+    @Order(21)
     @SneakyThrows
     public void testGetAllBookings_WithUserItemOwnerInvalidId_ResulStatusNotFound() {
         setUpBooking();
@@ -580,7 +544,7 @@ public class BookingControllerIntegrationTest {
     }
 
     @Test
-    @Order(24)
+    @Order(22)
     @SneakyThrows
     public void testCreateBooking_WithUserItemBooker_ResulStatusNotFound() {
         setUpBooking();
@@ -603,7 +567,7 @@ public class BookingControllerIntegrationTest {
     }
 
     @Test
-    @Order(25)
+    @Order(23)
     @SneakyThrows
     public void testCreateBooking_WithItemIdInvalid_ResulStatusNotFound() {
         setUpBooking();
@@ -626,7 +590,7 @@ public class BookingControllerIntegrationTest {
     }
 
     @Test
-    @Order(26)
+    @Order(24)
     @SneakyThrows
     public void testCreateBooking_WithStartAfterEndTime_ResulStatusBadRequest() {
         setUpBooking();
@@ -649,7 +613,7 @@ public class BookingControllerIntegrationTest {
     }
 
     @Test
-    @Order(27)
+    @Order(25)
     @SneakyThrows
     public void testCreateBooking_WithStartEqualsEndTime_ResulStatusBadRequest() {
         setUpBooking();
@@ -673,7 +637,7 @@ public class BookingControllerIntegrationTest {
     }
 
     @Test
-    @Order(28)
+    @Order(26)
     @SneakyThrows
     public void testCreateBooking_WithItemStatusNotAvailable_ResulStatusBadRequest() {
         setUpBooking();

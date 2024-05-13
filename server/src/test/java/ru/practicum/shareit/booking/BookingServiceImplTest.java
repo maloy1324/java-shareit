@@ -23,7 +23,7 @@ class BookingServiceImplTest {
     @Test
     void testGetUserBookings_WhenUserNotFound_ShouldThrowNotFoundException() {
         Long userId = 1L;
-        String state = "ALL";
+        State state = State.valueOf("ALL");
         Integer from = 0;
         Integer size = 10;
 
